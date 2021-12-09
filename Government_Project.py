@@ -9,9 +9,9 @@ reddit = praw.Reddit(
 subreddit_List = ["politics","Coronavirus","Conservative","AntiVaxxers"]
 
 
-conservative = [""]
-liberal = [""]
-other_subs = []
+conservative = ["Conservative","trump"]
+liberal = ["Trumpvirus"]
+other_subs = ['politics',"Coronavirus","AntiVaxxers"]
 key_words = ["sterile","microchips","magnetic","mRNA","Trump"]
 # https://www.reddit.com/r/AntiVaxxers/comments/ovpntm/the_inventor_of_mrna_technology_speaks_out/
 def searchSubreddits():
@@ -21,6 +21,7 @@ def searchSubreddits():
                 if key_words[words] in submission.title:
                     print(subreddit_List[sub])
                     print(submission.title)
+                    print(submission.url)
                     if submission.link_flair_text != None:
                         print("flair is" + submission.link_flair_text)
 
@@ -37,4 +38,4 @@ def searchComment(submission):
             for words in range(len(key_words)):
                 if key_words[words] in comment.body:
                     print(comment.body)
-searchSubreddits()
+searchSubreddit("democrats")
