@@ -10,21 +10,22 @@ subreddit_List = ["politics","Coronavirus","Conservative","AntiVaxxers"]
 
 
 conservative = ["Conservative","trump"]
-liberal = ["Trumpvirus"]
-other_subs = ['politics',"Coronavirus","AntiVaxxers"]
-key_words = ["sterile","microchips","magnetic","mRNA","Trump"]
+liberal = ["Trumpvirus","democrats"]
+other_subs = ['politics',"Coronavirus","AntiVaxxers","news"]
+key_words = ["sterile","microchips","magnetic","mRNA","Covid","vaccine"]
 # https://www.reddit.com/r/AntiVaxxers/comments/ovpntm/the_inventor_of_mrna_technology_speaks_out/
-def searchSubreddits():
-    for sub in range(len(subreddit_List)):
-        for submission in reddit.subreddit(subreddit_List[sub]).new(limit=None):
+def searchSubreddits(sub_list):
+    data = [] # data is the following per post: [subreddit,keyphrase found,title,news link]
+    for sub in range(len(sub_list)):
+        for submission in reddit.subreddit(sub_list[sub]).new(limit=None):
             for words in range(len(key_words)):
                 if key_words[words] in submission.title:
-                    print(subreddit_List[sub])
-                    print(submission.title)
-                    print(submission.url)
+
                     if submission.link_flair_text != None:
                         print("flair is" + submission.link_flair_text)
 
+                    data.append([sub_list[sub],key_words[words],submission.title,submission.url])
+    return data
 def searchSubreddit(sub):
     for submission in reddit.subreddit(sub).hot(limit=None):
         for words in range(len(key_words)):
@@ -38,4 +39,4 @@ def searchComment(submission):
             for words in range(len(key_words)):
                 if key_words[words] in comment.body:
                     print(comment.body)
-searchSubreddit("democrats")
+print(searchSubreddits(liberal))
