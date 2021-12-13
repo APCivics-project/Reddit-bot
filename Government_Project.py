@@ -1,6 +1,4 @@
 import praw
-import requests
-from bs4 import BeautifulSoup
 import wordninja
 
 # testing if I can commit.
@@ -20,7 +18,7 @@ key_words = ["mRNA", "Covid", "corona virus", "Covid-19", "vaccine"
     , "omicron", "delta", "CDC", "Fauci"]
 news_sources = [(["npr"], -.11), (["ny", "times"], -.19),
                 (["hill"], -.022), (["cnn"], -.20),
-                (["whitehouse"], 0), (["cnbc"], -.04)
+                (["whitehouse"], 0), (["cnbc"], -.04),
                 (["newsweek"], -.14), (["abc"], -.11),
                 (["politico"], -.15), (["sun", "sentinal"], -.14),
                 (["reuters"], -.03), (["ap"], -.05),
@@ -29,17 +27,16 @@ news_sources = [(["npr"], -.11), (["ny", "times"], -.19),
 
 
 def searchSubreddits(sub_list):
-    data = []  # data is the following per post: [subreddit,keyphrase found,title,news link]
+    data = [] # data is the following per post: [subreddit,keyphrase found,title,news link]
     for sub in range(len(sub_list)):
         for submission in reddit.subreddit(sub_list[sub]).new(limit=None):
+            words_found = []
             for words in range(len(key_words)):
-                if key_words[words].casefold() in submission.title.casefold():  # case fold makes it case insensitive
+                if key_words[words].casefold() in submission.title.casefold():
+                    words_found.append(key_words[words])# case fold makes it case insensitive
+                if key_words[words].casefold() == "fauci":
+                    data.append([sub_list[sub], words_found, submission.title, submission.url])
 
-                    # if submission.link_flair_text != None:
-                    # print("flair is" + submission.link_flair_text)
-
-                    data.append([sub_list[sub], key_words[words], submission.title, submission.url])
-                    break
     return data
 
 
@@ -69,4 +66,7 @@ def newsfrequency(data):
         print(wordninja.split(data[links][3]))
 
 
-newsfrequency(lib_list)
+#newsfrequency(lib_list)
+for i in range(len(lib_list)):
+    for y in range(len(lib_list[i][1])):
+        print(lib_list[i][1][y])
