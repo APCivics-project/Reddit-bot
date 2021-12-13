@@ -28,14 +28,17 @@ news_sources = [(["npr"], -.11), (["ny", "times"], -.19),
 
 def searchSubreddits(sub_list):
     data = [] # data is the following per post: [subreddit,keyphrase found,title,news link]
+    one_found = None
     for sub in range(len(sub_list)):
         for submission in reddit.subreddit(sub_list[sub]).new(limit=None):
             words_found = []
             for words in range(len(key_words)):
                 if key_words[words].casefold() in submission.title.casefold():
                     words_found.append(key_words[words])# case fold makes it case insensitive
-                if key_words[words].casefold() == "fauci":
+                    one_found = True
+                if words == 12 and one_found == True:
                     data.append([sub_list[sub], words_found, submission.title, submission.url])
+                    one_found = False
 
     return data
 
@@ -68,5 +71,4 @@ def newsfrequency(data):
 
 #newsfrequency(lib_list)
 for i in range(len(lib_list)):
-    for y in range(len(lib_list[i][1])):
-        print(lib_list[i][1][y])
+    print(lib_list[i])
